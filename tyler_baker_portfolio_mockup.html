@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tyler Baker — Mechanical Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEEE7;
+    --paper-2:#E4E6DD;
+    --ink:#1C232B;
+    --blue:#2B5C76;
+    --orange:#D8531F;
+    --line:#B7BFB4;
+    --line-soft:#CBD1C4;
+    --mono-grey:#5B655F;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: -1px -1px;
+  }
+
+  a{ color:inherit; }
+
+  .wrap{
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 28px 24px 80px;
+  }
+
+  /* ---------- TITLE BLOCK (signature element) ---------- */
+  .titleblock{
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    margin-bottom: 56px;
+  }
+  .tb-main{
+    padding: 26px 28px 22px;
+    border-right: 1.5px solid var(--ink);
+  }
+  .tb-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .tb-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 5vw, 46px);
+    line-height: 1.02;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .tb-role{
+    font-size: 15px;
+    color: var(--mono-grey);
+    margin: 0 0 18px;
+    max-width: 46ch;
+  }
+  .tb-links{
+    display:flex;
+    gap: 18px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+  }
+  .tb-links a{
+    text-decoration:none;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 2px;
+  }
+  .tb-links a:hover{
+    color: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .tb-fields{
+    display:grid;
+    grid-template-rows: repeat(4, 1fr);
+  }
+  .tb-field{
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .tb-field:last-child{ border-bottom:none; }
+  .tb-field-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mono-grey);
+    margin-bottom: 3px;
+  }
+  .tb-field-value{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink);
+  }
+  .tb-field-value.stamp{
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap: 14px;
+    margin: 0 0 26px;
+  }
+  .section-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    padding: 2px 7px;
+  }
+  .section-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    margin:0;
+  }
+  .section-rule{
+    flex:1;
+    height:1px;
+    background:
+      repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 11px);
+    opacity:0.55;
+    transform: translateY(-1px);
+  }
+
+  /* ---------- PROJECT GRID ---------- */
+  .projects{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 60px;
+  }
+  @media (max-width: 700px){
+    .projects{ grid-template-columns: 1fr; }
+    .titleblock{ grid-template-columns: 1fr; }
+    .tb-main{ border-right:none; border-bottom:1.5px solid var(--ink); }
+  }
+
+  .card{
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    display:flex;
+    flex-direction:column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .card:hover{
+    transform: translateY(-3px);
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  .card-fig{
+    aspect-ratio: 16/10;
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper-2);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .card-fig svg{ width:64%; height:64%; opacity:0.9; }
+  .fig-tag{
+    position:absolute;
+    top:10px; left:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing:0.1em;
+    color: var(--mono-grey);
+  }
+  .fig-placeholder-note{
+    position:absolute;
+    bottom:10px; right:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    color: var(--mono-grey);
+    border: 1px dashed var(--mono-grey);
+    padding: 2px 6px;
+  }
+
+  .card-body{
+    padding: 18px 20px 20px;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+  }
+  .card-index{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .card-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0 0 8px;
+  }
+  .card-problem{
+    font-size: 13.5px;
+    color: var(--ink);
+    opacity:0.85;
+    line-height:1.5;
+    margin: 0 0 14px;
+  }
+  .tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    border: 1px solid var(--line);
+    color: var(--mono-grey);
+    padding: 3px 7px;
+  }
+  .card-link{
+    margin-top:auto;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap: 6px;
+  }
+  .card-link .arrow{ transition: transform 0.15s ease; }
+  .card-link:hover{ color: var(--orange); }
+  .card-link:hover .arrow{ transform: translateX(3px); }
+
+  /* ---------- FOOTER ---------- */
+  .footer{
+    border-top: 1.5px solid var(--ink);
+    padding-top: 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap: 16px;
+  }
+  .footer-left{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--mono-grey);
+  }
+  .footer-cta{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size: 14px;
+    text-decoration:none;
+    border: 1px solid var(--ink);
+    padding: 9px 16px;
+  }
+  .footer-cta:hover{
+    background: var(--orange);
+    border-color: var(--orange);
+    color: var(--paper);
+  }
+
+  .note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--mono-grey);
+    text-align:center;
+    margin-top: 40px;
+    opacity:0.8;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- TITLE BLOCK -->
+  <div class="titleblock">
+    <div class="tb-main">
+      <div class="tb-eyebrow">Portfolio — Sheet 1 of 1</div>
+      <h1 class="tb-name">Tyler Baker</h1>
+      <p class="tb-role">Mechanical engineer focused on design, manufacturing, and prototyping — from CAD and FEA through fabrication and field testing.</p>
+      <div class="tb-links">
+        <a href="#">tylerbaker.eng</a>
+        <a href="#">Resume (PDF)</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </div>
+    <div class="tb-fields">
+      <div class="tb-field">
+        <div class="tb-field-label">Discipline</div>
+        <div class="tb-field-value">Mechanical Engineering</div>
+      </div>
+      <div class="tb-field">
+        <div class="tb-field-label">Focus</div>
+        <div class="tb-field-value">Design · Mfg · Test</div>
+      </div>
+      <div class="tb-field">
+        <div class="tb-field-label">Based in</div>
+        <div class="tb-field-value">Colorado, USA</div>
+      </div>
+      <div class="tb-field">
+        <div class="tb-field-label">Status</div>
+        <div class="tb-field-value stamp">Open to work</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Selected Work</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="projects">
+
+    <!-- Project 1: UAV -->
+    <div class="card">
+      <div class="card-fig">
+        <span class="fig-tag">FIG. 1</span>
+        <span class="fig-placeholder-note">add photo / CAD</span>
+        <svg viewBox="0 0 100 60" fill="none" stroke="var(--ink)" stroke-width="1.4">
+          <circle cx="50" cy="30" r="6"/>
+          <path d="M50 24 L20 8 M50 24 L80 8 M50 36 L20 52 M50 36 L80 52"/>
+          <circle cx="20" cy="8" r="8" stroke-dasharray="2 2"/>
+          <circle cx="80" cy="8" r="8" stroke-dasharray="2 2"/>
+          <circle cx="20" cy="52" r="8" stroke-dasharray="2 2"/>
+          <circle cx="80" cy="52" r="8" stroke-dasharray="2 2"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-index">PROJECT — 01 / MOST RECENT</div>
+        <h3 class="card-title">UAV Field Sensor Systems</h3>
+        <p class="card-problem">Designed ground and UAV-based sensor systems for high-alpine field deployment under strict power, cost, and durability constraints.</p>
+        <div class="tags">
+          <span class="tag">Systems Integration</span>
+          <span class="tag">Sensors</span>
+          <span class="tag">Field Testing</span>
+        </div>
+        <a href="#" class="card-link">View case study <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <!-- Project 2: Adaptive Gravel Bike -->
+    <div class="card">
+      <div class="card-fig">
+        <span class="fig-tag">FIG. 2</span>
+        <span class="fig-placeholder-note">add photo / CAD</span>
+        <svg viewBox="0 0 100 60" fill="none" stroke="var(--ink)" stroke-width="1.4">
+          <circle cx="22" cy="42" r="12"/>
+          <circle cx="78" cy="42" r="12"/>
+          <path d="M22 42 L45 20 L60 42 M45 20 L52 12 M22 42 L78 42 M60 42 L78 42"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-index">PROJECT — 02</div>
+        <h3 class="card-title">Adaptive Gravel Bike</h3>
+        <p class="card-problem">Designed an ultralight adaptive bike frame with an external partner org, balancing SLS titanium and bonded carbon fiber against rider-specific load cases.</p>
+        <div class="tags">
+          <span class="tag">CAD</span>
+          <span class="tag">Materials</span>
+          <span class="tag">Failure Mechanics</span>
+        </div>
+        <a href="adaptive_gravel_bike_case_study.html" class="card-link">View case study <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <!-- Project 3: SAE Baja -->
+    <div class="card">
+      <div class="card-fig">
+        <span class="fig-tag">FIG. 3</span>
+        <span class="fig-placeholder-note">add photo / CAD</span>
+        <svg viewBox="0 0 100 60" fill="none" stroke="var(--ink)" stroke-width="1.4">
+          <rect x="28" y="24" width="44" height="14" rx="2"/>
+          <circle cx="30" cy="44" r="9"/>
+          <circle cx="70" cy="44" r="9"/>
+          <path d="M32 24 L38 12 L62 12 L68 24"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-index">PROJECT — 03</div>
+        <h3 class="card-title">SAE Baja Vehicle</h3>
+        <p class="card-problem">Led systems engineering for a custom off-road vehicle build — CAD, manufacturing planning, and fabrication under strict cost and time constraints.</p>
+        <div class="tags">
+          <span class="tag">Systems Engineering</span>
+          <span class="tag">Project Mgmt</span>
+          <span class="tag">Fabrication</span>
+        </div>
+        <a href="sae_baja_case_study.html" class="card-link">View case study <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <!-- Project 4: Blister Labs -->
+    <div class="card">
+      <div class="card-fig">
+        <span class="fig-tag">FIG. 4</span>
+        <span class="fig-placeholder-note">add photo / data chart</span>
+        <svg viewBox="0 0 100 60" fill="none" stroke="var(--ink)" stroke-width="1.4">
+          <path d="M10 50 L10 12 L90 12" stroke-width="1.2"/>
+          <path d="M10 44 L28 30 L46 36 L64 18 L82 24" stroke-width="1.6"/>
+          <circle cx="28" cy="30" r="1.8" fill="var(--ink)"/>
+          <circle cx="64" cy="18" r="1.8" fill="var(--ink)"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-index">PROJECT — 04</div>
+        <h3 class="card-title">Mountain Bike Wheel Testing</h3>
+        <p class="card-problem">Built custom load and impact fixtures to evaluate wheel compliance and damping, correlating test data with real-world ride data.</p>
+        <div class="tags">
+          <span class="tag">Fixture Design</span>
+          <span class="tag">Data Correlation</span>
+          <span class="tag">DAQ</span>
+        </div>
+        <a href="blister_labs_case_study.html" class="card-link">View case study <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <!-- Project 5: Custom Steel Gravel Bike -->
+    <div class="card">
+      <div class="card-fig">
+        <span class="fig-tag">FIG. 5</span>
+        <span class="fig-placeholder-note">add photo</span>
+        <svg viewBox="0 0 100 60" fill="none" stroke="var(--ink)" stroke-width="1.4">
+          <path d="M20 48 L45 18 L60 48 L20 48 M45 18 L75 18 L75 48"/>
+          <circle cx="20" cy="48" r="8"/>
+          <circle cx="75" cy="48" r="8"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-index">PROJECT — 05</div>
+        <h3 class="card-title">Custom Steel Gravel Bike Frame</h3>
+        <p class="card-problem">Designed and hand-fabricated a custom-fit steel frame — machining, TIG welding, tube bending, and fixturing from raw tube to finished build.</p>
+        <div class="tags">
+          <span class="tag">TIG Welding</span>
+          <span class="tag">Machining</span>
+          <span class="tag">Fixturing</span>
+        </div>
+        <a href="steel_gravel_bike_case_study.html" class="card-link">View case study <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      Tyler Baker — Mechanical Engineer<br>
+      hello@tylerbaker.eng · Colorado, USA
+    </div>
+    <a href="#" class="footer-cta">Download Resume →</a>
+  </div>
+
+  <div class="note">This is a placeholder layout — swap in real photos, CAD renders, and links to build out each case-study page.</div>
+
+</div>
+</body>
+</html>

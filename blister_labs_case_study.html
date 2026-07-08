@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mountain Bike Wheel Testing — Tyler Baker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEEE7; --paper-2:#E4E6DD; --ink:#1C232B;
+    --blue:#2B5C76; --orange:#D8531F; --line:#B7BFB4; --line-soft:#CBD1C4; --mono-grey:#5B655F;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', sans-serif;
+    background-image: linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 32px 32px; background-position: -1px -1px;
+  }
+  a{ color:inherit; }
+  .wrap{ max-width: 900px; margin: 0 auto; padding: 24px 24px 90px; }
+  .back{
+    font-family:'IBM Plex Mono', monospace; font-size: 12px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px; margin-bottom: 26px; color: var(--mono-grey);
+  }
+  .back:hover{ color: var(--orange); }
+  .titleblock{
+    border: 1.5px solid var(--ink); display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; margin-bottom: 40px;
+  }
+  .tb-cell{ padding: 16px 18px; border-right: 1px solid var(--ink); }
+  .tb-cell:last-child{ border-right:none; }
+  .tb-label{
+    font-family:'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing:0.12em;
+    text-transform:uppercase; color: var(--mono-grey); margin-bottom:4px;
+  }
+  .tb-value{ font-family:'IBM Plex Mono', monospace; font-size: 12.5px; }
+  .tb-cell.title-cell .tb-value{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size: 16px; }
+  h1.headline{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: clamp(28px, 4.5vw, 40px);
+    line-height:1.05; margin: 0 0 14px; max-width: 24ch;
+  }
+  .dek{ font-size: 15px; color: var(--ink); opacity:0.85; max-width: 62ch; line-height:1.6; margin: 0 0 40px; }
+  .section-head{ display:flex; align-items:baseline; gap:14px; margin: 48px 0 20px; }
+  .section-num{
+    font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--blue);
+    border: 1px solid var(--blue); padding: 2px 7px;
+  }
+  .section-title{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size: 18px; margin:0; }
+  .section-rule{
+    flex:1; height:1px;
+    background: repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 11px);
+    opacity:0.55; transform: translateY(-1px);
+  }
+  .body-text{ font-size:14.5px; line-height:1.7; max-width: 66ch; margin: 0 0 16px; }
+  .fig-row{ display:grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-bottom: 10px; }
+  .fig-row.reverse{ grid-template-columns: 1fr 1.4fr; }
+  .fig{
+    border: 1px solid var(--ink); background: var(--paper-2); aspect-ratio: 4/3; position:relative;
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .fig svg{ width:60%; height:60%; }
+  .fig-tag{ position:absolute; top:9px; left:9px; font-family:'IBM Plex Mono', monospace; font-size:9.5px; color: var(--mono-grey); }
+  .fig-note{
+    position:absolute; bottom:9px; right:9px; font-family:'IBM Plex Mono', monospace; font-size:9px;
+    color: var(--mono-grey); border: 1px dashed var(--mono-grey); padding: 2px 6px;
+  }
+  .fig-caption{ font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--mono-grey); margin-top: 8px; }
+  @media (max-width: 680px){
+    .fig-row, .fig-row.reverse{ grid-template-columns: 1fr; }
+    .titleblock{ grid-template-columns: 1fr 1fr; }
+  }
+  .spec-table{ width:100%; border-collapse: collapse; margin: 4px 0 8px; font-size: 13.5px; }
+  .spec-table tr{ border-bottom: 1px solid var(--line); }
+  .spec-table tr:last-child{ border-bottom:none; }
+  .spec-table td{ padding: 10px 6px; vertical-align:top; }
+  .spec-table td:first-child{
+    font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--blue);
+    white-space:nowrap; padding-right: 20px; width: 1%;
+  }
+  .outcome-block{ border-left: 3px solid var(--orange); padding: 4px 0 4px 18px; margin: 8px 0 4px; }
+  .outcome-block .body-text{ margin-bottom:0; }
+  .tags{ display:flex; flex-wrap:wrap; gap:6px; margin: 4px 0 0; }
+  .tag{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; border: 1px solid var(--line); color: var(--mono-grey); padding: 3px 7px; }
+  .footer{
+    border-top: 1.5px solid var(--ink); margin-top: 60px; padding-top: 22px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+  }
+  .footer-left{ font-family:'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--mono-grey); }
+  .next-link{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; text-decoration:none;
+    border: 1px solid var(--ink); padding: 9px 16px;
+  }
+  .next-link:hover{ background: var(--orange); border-color: var(--orange); color: var(--paper); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a href="tyler_baker_portfolio_mockup.html" class="back">← Back to all work</a>
+
+  <div class="titleblock">
+    <div class="tb-cell title-cell">
+      <div class="tb-label">Project</div>
+      <div class="tb-value">MTB Wheel Testing</div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Role</div>
+      <div class="tb-value">Research / ME Intern</div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Timeline</div>
+      <div class="tb-value">May–Aug 2023 & 2024</div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Company</div>
+      <div class="tb-value">Blister Labs</div>
+    </div>
+  </div>
+
+  <h1 class="headline">Building test fixtures to turn "this wheel feels stiffer" into real numbers.</h1>
+  <p class="dek">Custom load and impact testing fixtures used to evaluate mountain bike wheel compliance and damping — correlating lab data with real-world ride data to inform wheel design and rider selection.</p>
+
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2 class="section-title">The Problem</h2>
+    <div class="section-rule"></div>
+  </div>
+  <p class="body-text">Riders describe wheels in subjective terms — "stiff," "compliant," "harsh" — but Blister Labs needed to back those impressions with repeatable, quantifiable data so wheel comparisons and recommendations could be based on measurements rather than feel alone.</p>
+
+  <div class="fig-row">
+    <div class="fig">
+      <span class="fig-tag">FIG. 1 — TEST FIXTURE</span>
+      <span class="fig-note">add photo</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <rect x="10" y="55" width="80" height="6"/>
+        <path d="M25 55 L25 25 M75 55 L75 25 M25 25 L75 25"/>
+        <circle cx="50" cy="40" r="12"/>
+      </svg>
+    </div>
+    <div class="fig">
+      <span class="fig-tag">FIG. 2 — LOAD SETUP</span>
+      <span class="fig-note">add photo</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <circle cx="50" cy="45" r="18"/>
+        <path d="M50 20 L50 5" stroke="var(--orange)"/>
+        <path d="M46 9 L50 5 L54 9" stroke="var(--orange)"/>
+      </svg>
+    </div>
+  </div>
+  <p class="fig-caption">Left: custom impact/load fixture. Right: controlled loading setup on a test wheel.</p>
+
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Approach</h2>
+    <div class="section-rule"></div>
+  </div>
+  <p class="body-text">The work split into two halves: building a fixture that could apply controlled, repeatable loads and impacts, and then tying that lab data back to how a wheel actually behaves on trail.</p>
+
+  <table class="spec-table">
+    <tr>
+      <td>FIXTURING</td>
+      <td>Designed and built custom load and impact fixtures capable of isolating specific compliance and damping characteristics per wheel, controlling for variables that would otherwise muddy comparisons.</td>
+    </tr>
+    <tr>
+      <td>DATA</td>
+      <td>Integrated sensor and motion capture data streams so lab measurements could be directly correlated against real-world riding data instead of standing alone.</td>
+    </tr>
+    <tr>
+      <td>OUTPUT</td>
+      <td>Comparisons across wheel designs and materials, used to inform rider-specific wheel selection recommendations.</td>
+    </tr>
+  </table>
+
+  <div class="fig-row reverse">
+    <div class="fig">
+      <span class="fig-tag">FIG. 3 — DATA CORRELATION</span>
+      <span class="fig-note">add chart</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <path d="M10 55 L10 12 L90 12" stroke-width="1.1"/>
+        <path d="M10 48 L30 34 L50 40 L70 20 L88 28" stroke-width="1.6"/>
+        <circle cx="30" cy="34" r="1.8" fill="var(--ink)"/>
+        <circle cx="70" cy="20" r="1.8" fill="var(--ink)"/>
+      </svg>
+    </div>
+    <div class="fig">
+      <span class="fig-tag">FIG. 4 — FIELD TESTING</span>
+      <span class="fig-note">add photo</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <circle cx="30" cy="50" r="10"/>
+        <circle cx="72" cy="50" r="10"/>
+        <path d="M30 50 L48 25 L60 50"/>
+      </svg>
+    </div>
+  </div>
+  <p class="fig-caption">Left: lab data correlated against field motion-capture data. Right: real-world ride testing.</p>
+
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Outcome</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="outcome-block">
+    <p class="body-text">Delivered a repeatable testing process that turned subjective wheel "feel" into comparable data, used across multiple wheel designs and materials to support Blister Labs' rider recommendations.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag">Fixture Design</span>
+    <span class="tag">DAQ / Sensors</span>
+    <span class="tag">Motion Capture</span>
+    <span class="tag">Data Correlation</span>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Tyler Baker — Mechanical Engineer<br>hello@tylerbaker.eng</div>
+    <a href="tyler_baker_portfolio_mockup.html" class="next-link">← All projects</a>
+  </div>
+
+</div>
+</body>
+</html>

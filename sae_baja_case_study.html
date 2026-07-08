@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAE Baja Vehicle — Tyler Baker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEEE7; --paper-2:#E4E6DD; --ink:#1C232B;
+    --blue:#2B5C76; --orange:#D8531F; --line:#B7BFB4; --line-soft:#CBD1C4; --mono-grey:#5B655F;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', sans-serif;
+    background-image: linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 32px 32px; background-position: -1px -1px;
+  }
+  a{ color:inherit; }
+  .wrap{ max-width: 900px; margin: 0 auto; padding: 24px 24px 90px; }
+  .back{
+    font-family:'IBM Plex Mono', monospace; font-size: 12px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px; margin-bottom: 26px; color: var(--mono-grey);
+  }
+  .back:hover{ color: var(--orange); }
+  .titleblock{
+    border: 1.5px solid var(--ink); display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; margin-bottom: 40px;
+  }
+  .tb-cell{ padding: 16px 18px; border-right: 1px solid var(--ink); }
+  .tb-cell:last-child{ border-right:none; }
+  .tb-label{
+    font-family:'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing:0.12em;
+    text-transform:uppercase; color: var(--mono-grey); margin-bottom:4px;
+  }
+  .tb-value{ font-family:'IBM Plex Mono', monospace; font-size: 12.5px; }
+  .tb-cell.title-cell .tb-value{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size: 16px; }
+  h1.headline{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: clamp(28px, 4.5vw, 40px);
+    line-height:1.05; margin: 0 0 14px; max-width: 24ch;
+  }
+  .dek{ font-size: 15px; color: var(--ink); opacity:0.85; max-width: 62ch; line-height:1.6; margin: 0 0 40px; }
+  .section-head{ display:flex; align-items:baseline; gap:14px; margin: 48px 0 20px; }
+  .section-num{
+    font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--blue);
+    border: 1px solid var(--blue); padding: 2px 7px;
+  }
+  .section-title{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size: 18px; margin:0; }
+  .section-rule{
+    flex:1; height:1px;
+    background: repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 11px);
+    opacity:0.55; transform: translateY(-1px);
+  }
+  .body-text{ font-size:14.5px; line-height:1.7; max-width: 66ch; margin: 0 0 16px; }
+  .fig-row{ display:grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-bottom: 10px; }
+  .fig-row.reverse{ grid-template-columns: 1fr 1.4fr; }
+  .fig{
+    border: 1px solid var(--ink); background: var(--paper-2); aspect-ratio: 4/3; position:relative;
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .fig svg{ width:60%; height:60%; }
+  .fig-tag{ position:absolute; top:9px; left:9px; font-family:'IBM Plex Mono', monospace; font-size:9.5px; color: var(--mono-grey); }
+  .fig-note{
+    position:absolute; bottom:9px; right:9px; font-family:'IBM Plex Mono', monospace; font-size:9px;
+    color: var(--mono-grey); border: 1px dashed var(--mono-grey); padding: 2px 6px;
+  }
+  .fig-caption{ font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--mono-grey); margin-top: 8px; }
+  @media (max-width: 680px){
+    .fig-row, .fig-row.reverse{ grid-template-columns: 1fr; }
+    .titleblock{ grid-template-columns: 1fr 1fr; }
+  }
+  .spec-table{ width:100%; border-collapse: collapse; margin: 4px 0 8px; font-size: 13.5px; }
+  .spec-table tr{ border-bottom: 1px solid var(--line); }
+  .spec-table tr:last-child{ border-bottom:none; }
+  .spec-table td{ padding: 10px 6px; vertical-align:top; }
+  .spec-table td:first-child{
+    font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--blue);
+    white-space:nowrap; padding-right: 20px; width: 1%;
+  }
+  .outcome-block{ border-left: 3px solid var(--orange); padding: 4px 0 4px 18px; margin: 8px 0 4px; }
+  .outcome-block .body-text{ margin-bottom:0; }
+  .tags{ display:flex; flex-wrap:wrap; gap:6px; margin: 4px 0 0; }
+  .tag{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; border: 1px solid var(--line); color: var(--mono-grey); padding: 3px 7px; }
+  .footer{
+    border-top: 1.5px solid var(--ink); margin-top: 60px; padding-top: 22px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+  }
+  .footer-left{ font-family:'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--mono-grey); }
+  .next-link{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; text-decoration:none;
+    border: 1px solid var(--ink); padding: 9px 16px;
+  }
+  .next-link:hover{ background: var(--orange); border-color: var(--orange); color: var(--paper); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a href="tyler_baker_portfolio_mockup.html" class="back">← Back to all work</a>
+
+  <div class="titleblock">
+    <div class="tb-cell title-cell">
+      <div class="tb-label">Project</div>
+      <div class="tb-value">SAE Baja Vehicle</div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Role</div>
+      <div class="tb-value">Systems Engineer / Lead</div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Timeline</div>
+      <div class="tb-value">Aug 2023 – May 2024</div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Context</div>
+      <div class="tb-value">Senior Capstone</div>
+    </div>
+  </div>
+
+  <h1 class="headline">Leading systems integration on a competition off-road vehicle, start to finish.</h1>
+  <p class="dek">A senior capstone project building a custom off-road vehicle to SAE Baja competition rules — under real cost, time, and reliability constraints, with a team depending on the schedule holding.</p>
+
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2 class="section-title">The Problem</h2>
+    <div class="section-rule"></div>
+  </div>
+  <p class="body-text">SAE Baja vehicles are built to a strict rulebook and judged on both performance and cost — every subsystem (suspension, drivetrain, chassis, steering) has to work together under a fixed budget and a hard competition deadline, with no room for a subsystem to blow the schedule for the rest of the team.</p>
+
+  <div class="fig-row">
+    <div class="fig">
+      <span class="fig-tag">FIG. 1 — SYSTEM ARCHITECTURE</span>
+      <span class="fig-note">add diagram / photo</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <rect x="15" y="15" width="70" height="16" rx="2"/>
+        <path d="M25 31 L25 45 M50 31 L50 50 M75 31 L75 45"/>
+        <rect x="12" y="45" width="26" height="12" rx="2"/>
+        <rect x="37" y="50" width="26" height="12" rx="2"/>
+        <rect x="62" y="45" width="26" height="12" rx="2"/>
+      </svg>
+    </div>
+    <div class="fig">
+      <span class="fig-tag">FIG. 2 — VEHICLE CAD</span>
+      <span class="fig-note">add CAD render</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <rect x="20" y="28" width="60" height="16" rx="3"/>
+        <circle cx="26" cy="48" r="10"/>
+        <circle cx="74" cy="48" r="10"/>
+        <path d="M22 28 L30 14 L70 14 L78 28"/>
+      </svg>
+    </div>
+  </div>
+  <p class="fig-caption">Left: subsystem breakdown across the team. Right: full-vehicle CAD assembly.</p>
+
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Approach</h2>
+    <div class="section-rule"></div>
+  </div>
+  <p class="body-text">As systems engineer, the job was less about any single part and more about making sure every subsystem's decisions stayed compatible with everyone else's — geometry, mounting points, weight budget, and timeline all had to reconcile across the team.</p>
+
+  <table class="spec-table">
+    <tr>
+      <td>CAD</td>
+      <td>Owned the master assembly model so every subsystem team could check interference and mounting geometry against a single source of truth instead of guessing at fit.</td>
+    </tr>
+    <tr>
+      <td>PLANNING</td>
+      <td>Built and maintained the manufacturing plan and build schedule, sequencing fabrication so long-lead parts didn't stall final assembly close to competition.</td>
+    </tr>
+    <tr>
+      <td>CONSTRAINT</td>
+      <td>Every subsystem decision was weighed against the competition's cost report — cheaper, simpler solutions were preferred over more capable but expensive ones.</td>
+    </tr>
+  </table>
+
+  <div class="fig-row reverse">
+    <div class="fig">
+      <span class="fig-tag">FIG. 3 — FABRICATION</span>
+      <span class="fig-note">add photo</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <path d="M20 55 L45 20 L80 55" />
+        <circle cx="45" cy="20" r="3" fill="var(--ink)"/>
+      </svg>
+    </div>
+    <div class="fig">
+      <span class="fig-tag">FIG. 4 — COMPETITION DAY</span>
+      <span class="fig-note">add photo</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <rect x="15" y="40" width="70" height="10" rx="2"/>
+        <circle cx="28" cy="55" r="8"/>
+        <circle cx="72" cy="55" r="8"/>
+      </svg>
+    </div>
+  </div>
+  <p class="fig-caption">Left: chassis fabrication in progress. Right: the finished vehicle at competition.</p>
+
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Outcome</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="outcome-block">
+    <p class="body-text">Delivered a competition-ready vehicle on schedule and within budget, with full documentation the team could hand off — the kind of cross-subsystem coordination that translates directly to managing engineering programs with multiple interdependent workstreams.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag">Systems Engineering</span>
+    <span class="tag">CAD Assembly</span>
+    <span class="tag">Manufacturing Planning</span>
+    <span class="tag">Project Management</span>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Tyler Baker — Mechanical Engineer<br>hello@tylerbaker.eng</div>
+    <a href="tyler_baker_portfolio_mockup.html" class="next-link">← All projects</a>
+  </div>
+
+</div>
+</body>
+</html>
