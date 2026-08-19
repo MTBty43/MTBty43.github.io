@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stationary Sensor Suite Station — Tyler Baker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEEE7; --paper-2:#E4E6DD; --ink:#1C232B;
+    --blue:#2B5C76; --orange:#D8531F; --line:#B7BFB4; --line-soft:#CBD1C4; --mono-grey:#5B655F;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', sans-serif;
+    background-image: linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 32px 32px; background-position: -1px -1px;
+  }
+  a{ color:inherit; }
+  .wrap{ max-width: 900px; margin: 0 auto; padding: 24px 24px 90px; }
+  .back{
+    font-family:'IBM Plex Mono', monospace; font-size: 12px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px; margin-bottom: 26px; color: var(--mono-grey);
+  }
+  .back:hover{ color: var(--orange); }
+  .titleblock{
+    border: 1.5px solid var(--ink); display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; margin-bottom: 40px;
+  }
+  .tb-cell{ padding: 16px 18px; border-right: 1px solid var(--ink); }
+  .tb-cell:last-child{ border-right:none; }
+  .tb-label{
+    font-family:'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing:0.12em;
+    text-transform:uppercase; color: var(--mono-grey); margin-bottom:4px;
+  }
+  .tb-value{ font-family:'IBM Plex Mono', monospace; font-size: 12.5px; }
+  .tb-cell.title-cell .tb-value{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size: 16px; }
+  h1.headline{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: clamp(28px, 4.5vw, 40px);
+    line-height:1.05; margin: 0 0 14px; max-width: 24ch;
+  }
+  .dek{ font-size: 15px; color: var(--ink); opacity:0.85; max-width: 62ch; line-height:1.6; margin: 0 0 40px; }
+  .section-head{ display:flex; align-items:baseline; gap:14px; margin: 48px 0 20px; }
+  .section-num{
+    font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--blue);
+    border: 1px solid var(--blue); padding: 2px 7px;
+  }
+  .section-title{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size: 18px; margin:0; }
+  .section-rule{
+    flex:1; height:1px;
+    background: repeating-linear-gradient(to right, var(--ink) 0 6px, transparent 6px 11px);
+    opacity:0.55; transform: translateY(-1px);
+  }
+  .body-text{ font-size:14.5px; line-height:1.7; max-width: 66ch; margin: 0 0 16px; }
+  .fig-row{ display:grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-bottom: 10px; }
+  .fig-row.reverse{ grid-template-columns: 1fr 1.4fr; }
+  .fig{
+    border: 1px solid var(--ink); background: var(--paper-2); aspect-ratio: 4/3; position:relative;
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .fig svg{ width:60%; height:60%; }
+  .fig img{ width:100%; height:100%; object-fit:contain; }
+  .fig-tag{ position:absolute; top:9px; left:9px; font-family:'IBM Plex Mono', monospace; font-size:9.5px; color: var(--mono-grey); }
+  .fig-note{
+    position:absolute; bottom:9px; right:9px; font-family:'IBM Plex Mono', monospace; font-size:9px;
+    color: var(--mono-grey); border: 1px dashed var(--mono-grey); padding: 2px 6px;
+  }
+  .fig-caption{ font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--mono-grey); margin-top: 8px; }
+  @media (max-width: 680px){
+    .fig-row, .fig-row.reverse{ grid-template-columns: 1fr; }
+    .titleblock{ grid-template-columns: 1fr 1fr; }
+  }
+  .spec-table{ width:100%; border-collapse: collapse; margin: 4px 0 8px; font-size: 13.5px; }
+  .spec-table tr{ border-bottom: 1px solid var(--line); }
+  .spec-table tr:last-child{ border-bottom:none; }
+  .spec-table td{ padding: 10px 6px; vertical-align:top; }
+  .spec-table td:first-child{
+    font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--blue);
+    white-space:nowrap; padding-right: 20px; width: 1%;
+  }
+  .outcome-block{ border-left: 3px solid var(--orange); padding: 4px 0 4px 18px; margin: 8px 0 4px; }
+  .outcome-block .body-text{ margin-bottom:0; }
+  .tags{ display:flex; flex-wrap:wrap; gap:6px; margin: 4px 0 0; }
+  .tag{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; border: 1px solid var(--line); color: var(--mono-grey); padding: 3px 7px; }
+
+  /* ---------- PDF VIEWER ---------- */
+  .pdf-viewer{
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+  }
+  .pdf-viewer-head{
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .pdf-viewer-title{
+    font-family:'IBM Plex Mono', monospace; font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--mono-grey);
+  }
+  .pdf-nav{
+    display:flex; align-items:center; gap: 10px;
+    font-family:'IBM Plex Mono', monospace; font-size: 12.5px;
+  }
+  .pdf-nav button{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size: 13px;
+    border: 1px solid var(--ink); background: var(--paper); color: var(--ink);
+    padding: 6px 12px; cursor: pointer;
+  }
+  .pdf-nav button:hover:not(:disabled){ background: var(--orange); border-color: var(--orange); color: var(--paper); }
+  .pdf-nav button:disabled{ opacity: 0.35; cursor: default; }
+  .pdf-page-indicator{ min-width: 64px; text-align:center; }
+  .pdf-canvas-wrap{
+    display:flex; align-items:center; justify-content:center;
+    padding: 20px; min-height: 420px;
+    overflow: auto;
+  }
+  .pdf-canvas-wrap canvas{
+    max-width: 100%;
+    box-shadow: 0 0 0 1px var(--ink);
+    background: #fff;
+  }
+  .pdf-status{
+    font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--mono-grey);
+    padding: 40px 14px; text-align:center;
+  }
+  .pdf-download{
+    font-family:'IBM Plex Mono', monospace; font-size: 11px;
+    text-decoration:none; color: var(--mono-grey); border-bottom: 1px dashed var(--mono-grey);
+  }
+  .pdf-download:hover{ color: var(--orange); border-color: var(--orange); }
+
+  .footer{
+    border-top: 1.5px solid var(--ink); margin-top: 60px; padding-top: 22px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+  }
+  .footer-left{ font-family:'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--mono-grey); }
+  .next-link{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; text-decoration:none;
+    border: 1px solid var(--ink); padding: 9px 16px;
+  }
+  .next-link:hover{ background: var(--orange); border-color: var(--orange); color: var(--paper); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a href="index.html" class="back">← Back to all work</a>
+
+  <div class="titleblock">
+    <div class="tb-cell title-cell">
+      <div class="tb-label">Project</div>
+      <div class="tb-value">Stationary Sensor Suite Station</div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Role</div>
+      <div class="tb-value">Post-Bacc Researcher</div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Timeline</div>
+      <div class="tb-value">2024 – 2025</div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Context</div>
+      <div class="tb-value">Field Research</div>
+    </div>
+  </div>
+
+  <h1 class="headline">Designing a self-sufficient sensor station that could go wherever the research needed it.</h1>
+  <p class="dek">A stationary, solar-powered sensor suite built to run unattended in remote field locations — housing multiple sensor types while staying light and modular enough to relocate between deployment sites.</p>
+
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2 class="section-title">The Problem</h2>
+    <div class="section-rule"></div>
+  </div>
+  <p class="body-text">Remote field research sites rarely have grid power or easy access, but the data collection needs demanded a station that could run multiple sensors continuously for extended stretches. The station also needed to be portable enough to move between deployment sites as the research questions shifted, without turning every relocation into its own build project.</p>
+
+  <div class="fig-row">
+    <div class="fig">
+      <span class="fig-tag">FIG. 1 — STATION OVERVIEW</span>
+      <span class="fig-note">add photo / CAD</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <rect x="35" y="10" width="30" height="18" rx="1"/>
+        <path d="M50 28 L50 55" />
+        <rect x="20" y="55" width="60" height="6"/>
+        <path d="M35 55 L35 40 L65 40 L65 55"/>
+      </svg>
+    </div>
+    <div class="fig">
+      <span class="fig-tag">FIG. 2 — DEPLOYMENT SITE</span>
+      <span class="fig-note">add photo</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <path d="M10 55 L35 20 L50 40 L65 15 L90 55 Z"/>
+        <circle cx="35" cy="20" r="1.6" fill="var(--ink)"/>
+        <circle cx="65" cy="15" r="1.6" fill="var(--ink)"/>
+      </svg>
+    </div>
+  </div>
+  <p class="fig-caption">Left: sensor station overview showing solar array and instrument housing. Right: remote field deployment site.</p>
+
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Approach</h2>
+    <div class="section-rule"></div>
+  </div>
+  <p class="body-text">The design centered on three connected requirements: enough onboard power to run everything unattended, a housing that could protect a mixed set of sensors from the elements, and a structure light and modular enough to break down and relocate.</p>
+
+  <table class="spec-table">
+    <tr>
+      <td>POWER</td>
+      <td>Sized a solar panel and battery storage system to keep the full sensor suite running continuously through variable weather and daylight conditions at remote sites.</td>
+    </tr>
+    <tr>
+      <td>SENSORS</td>
+      <td>Integrated multiple sensor types into a single station, managing mounting, wiring, and enclosure design so each could operate without interfering with the others.</td>
+    </tr>
+    <tr>
+      <td>PORTABILITY</td>
+      <td>Designed the structure to break down and relocate between field sites, avoiding a fixed, single-use installation.</td>
+    </tr>
+  </table>
+
+  <div class="fig-row reverse">
+    <div class="fig">
+      <span class="fig-tag">FIG. 3 — SOLAR / POWER SYSTEM</span>
+      <span class="fig-note">add photo / diagram</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <rect x="20" y="20" width="60" height="20" rx="2"/>
+        <path d="M30 20 L30 40 M45 20 L45 40 M60 20 L60 40 M75 20 L75 40"/>
+        <rect x="42" y="48" width="16" height="10" rx="1"/>
+      </svg>
+    </div>
+    <div class="fig">
+      <span class="fig-tag">FIG. 4 — FIELD DEPLOYMENT</span>
+      <span class="fig-note">add photo</span>
+      <svg viewBox="0 0 100 70" fill="none" stroke="var(--ink)" stroke-width="1.3">
+        <circle cx="30" cy="50" r="10"/>
+        <circle cx="72" cy="50" r="10"/>
+        <path d="M30 50 L48 25 L60 50"/>
+      </svg>
+    </div>
+  </div>
+  <p class="fig-caption">Left: solar and power system supporting the sensor suite. Right: station assembled and running at a field site.</p>
+
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Outcome</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="outcome-block">
+    <p class="body-text">Delivered a self-sufficient, solar-powered sensor station capable of unattended operation at remote sites, and portable enough to be redeployed as the research team's field needs changed.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag">Solar Power Systems</span>
+    <span class="tag">Sensor Integration</span>
+    <span class="tag">Field Testing</span>
+    <span class="tag">Portable Design</span>
+  </div>
+
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Full Report</h2>
+    <div class="section-rule"></div>
+  </div>
+  <p class="body-text">The complete research report from this post-bacc project, covering station design, power system sizing, and field results.</p>
+
+  <div class="pdf-viewer">
+    <div class="pdf-viewer-head">
+      <span class="pdf-viewer-title">Stationary Sensor Suite Station — Research Report</span>
+      <div class="pdf-nav">
+        <button id="pdf-prev" disabled>← Prev</button>
+        <span class="pdf-page-indicator" id="pdf-page-indicator">–</span>
+        <button id="pdf-next" disabled>Next →</button>
+      </div>
+    </div>
+    <div class="pdf-canvas-wrap" id="pdf-canvas-wrap">
+      <div class="pdf-status" id="pdf-status">Loading report…</div>
+    </div>
+    <div class="pdf-viewer-head" style="border-bottom:none; border-top:1px solid var(--ink);">
+      <a class="pdf-download" href="PDFs/PLACEHOLDER_FILENAME.pdf" target="_blank" rel="noopener">Open / download full PDF ↗</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Tyler Baker — Mechanical Engineer<br>hello@tylerbaker.eng</div>
+    <a href="index.html" class="next-link">← All projects</a>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function(){
+  const url = "PDFs/PLACEHOLDER_FILENAME.pdf";
+  const wrap = document.getElementById('pdf-canvas-wrap');
+  const statusEl = document.getElementById('pdf-status');
+  const prevBtn = document.getElementById('pdf-prev');
+  const nextBtn = document.getElementById('pdf-next');
+  const indicator = document.getElementById('pdf-page-indicator');
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+  let pdfDoc = null;
+  let currentPage = 1;
+  let rendering = false;
+  let pendingPage = null;
+
+  function renderPage(num){
+    if (rendering){ pendingPage = num; return; }
+    rendering = true;
+
+    pdfDoc.getPage(num).then(function(page){
+      let canvas = wrap.querySelector('canvas');
+      if (!canvas){
+        canvas = document.createElement('canvas');
+        wrap.innerHTML = '';
+        wrap.appendChild(canvas);
+      }
+      const ctx = canvas.getContext('2d');
+
+      const containerWidth = wrap.clientWidth - 40;
+      const unscaledViewport = page.getViewport({ scale: 1 });
+      const scale = Math.min(2, Math.max(0.5, containerWidth / unscaledViewport.width));
+      const viewport = page.getViewport({ scale: scale });
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      const renderTask = page.render({ canvasContext: ctx, viewport: viewport });
+      renderTask.promise.then(function(){
+        rendering = false;
+        if (pendingPage !== null){
+          const p = pendingPage;
+          pendingPage = null;
+          renderPage(p);
+        }
+      });
+
+      currentPage = num;
+      indicator.textContent = num + ' / ' + pdfDoc.numPages;
+      prevBtn.disabled = (num <= 1);
+      nextBtn.disabled = (num >= pdfDoc.numPages);
+    });
+  }
+
+  prevBtn.addEventListener('click', function(){
+    if (currentPage > 1) renderPage(currentPage - 1);
+  });
+  nextBtn.addEventListener('click', function(){
+    if (pdfDoc && currentPage < pdfDoc.numPages) renderPage(currentPage + 1);
+  });
+
+  pdfjsLib.getDocument(url).promise.then(function(doc){
+    pdfDoc = doc;
+    statusEl.remove();
+    renderPage(1);
+  }).catch(function(err){
+    statusEl.textContent = "Couldn't load the report — try the download link below instead.";
+    console.error(err);
+  });
+})();
+</script>
+
+</body>
+</html>
