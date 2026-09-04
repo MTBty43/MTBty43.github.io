@@ -85,54 +85,6 @@
   .tags{ display:flex; flex-wrap:wrap; gap:6px; margin: 4px 0 0; }
   .tag{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; border: 1px solid var(--line); color: var(--mono-grey); padding: 3px 7px; }
 
-  /* ---------- PDF VIEWER ---------- */
-  .pdf-viewer{
-    border: 1px solid var(--ink);
-    background: var(--paper-2);
-  }
-  .pdf-viewer-head{
-    display:flex; align-items:center; justify-content:space-between;
-    border-bottom: 1px solid var(--ink);
-    padding: 10px 14px;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .pdf-viewer-title{
-    font-family:'IBM Plex Mono', monospace; font-size: 11px;
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--mono-grey);
-  }
-  .pdf-nav{
-    display:flex; align-items:center; gap: 10px;
-    font-family:'IBM Plex Mono', monospace; font-size: 12.5px;
-  }
-  .pdf-nav button{
-    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size: 13px;
-    border: 1px solid var(--ink); background: var(--paper); color: var(--ink);
-    padding: 6px 12px; cursor: pointer;
-  }
-  .pdf-nav button:hover:not(:disabled){ background: var(--orange); border-color: var(--orange); color: var(--paper); }
-  .pdf-nav button:disabled{ opacity: 0.35; cursor: default; }
-  .pdf-page-indicator{ min-width: 64px; text-align:center; }
-  .pdf-canvas-wrap{
-    display:flex; align-items:center; justify-content:center;
-    padding: 20px; min-height: 420px;
-    overflow: auto;
-  }
-  .pdf-canvas-wrap canvas{
-    max-width: 100%;
-    box-shadow: 0 0 0 1px var(--ink);
-    background: #fff;
-  }
-  .pdf-status{
-    font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--mono-grey);
-    padding: 40px 14px; text-align:center;
-  }
-  .pdf-download{
-    font-family:'IBM Plex Mono', monospace; font-size: 11px;
-    text-decoration:none; color: var(--mono-grey); border-bottom: 1px dashed var(--mono-grey);
-  }
-  .pdf-download:hover{ color: var(--orange); border-color: var(--orange); }
-
   .footer{
     border-top: 1.5px solid var(--ink); margin-top: 60px; padding-top: 22px;
     display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
@@ -240,109 +192,12 @@
     <span class="tag">Field Testing</span>
   </div>
 
-  <div class="section-head">
-    <span class="section-num">04</span>
-    <h2 class="section-title">Full Report</h2>
-    <div class="section-rule"></div>
-  </div>
-  <p class="body-text">The complete research report from this post-bacc project, covering system design, field methodology, and results.</p>
-
-  <div class="pdf-viewer">
-    <div class="pdf-viewer-head">
-      <span class="pdf-viewer-title">UAV Field Sensor Systems — Research Report</span>
-      <div class="pdf-nav">
-        <button id="pdf-prev" disabled>← Prev</button>
-        <span class="pdf-page-indicator" id="pdf-page-indicator">–</span>
-        <button id="pdf-next" disabled>Next →</button>
-      </div>
-    </div>
-    <div class="pdf-canvas-wrap" id="pdf-canvas-wrap">
-      <div class="pdf-status" id="pdf-status">Loading report…</div>
-    </div>
-    <div class="pdf-viewer-head" style="border-bottom:none; border-top:1px solid var(--ink);">
-      <a class="pdf-download" href="PDFs/PLACEHOLDER_FILENAME.pdf" target="_blank" rel="noopener">Open / download full PDF ↗</a>
-    </div>
-  </div>
-
   <div class="footer">
-    <div class="footer-left">Tyler Baker — Mechanical Engineer<br>hello@tylerbaker.eng</div>
+    <div class="footer-left">Tyler Baker — Mechanical Engineer<br>tylerjbaker43@gmail.com</div>
     <a href="index.html" class="next-link">← All projects</a>
   </div>
 
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script>
-(function(){
-  const url = "PDFs/PLACEHOLDER_FILENAME.pdf";
-  const wrap = document.getElementById('pdf-canvas-wrap');
-  const statusEl = document.getElementById('pdf-status');
-  const prevBtn = document.getElementById('pdf-prev');
-  const nextBtn = document.getElementById('pdf-next');
-  const indicator = document.getElementById('pdf-page-indicator');
-
-  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-  let pdfDoc = null;
-  let currentPage = 1;
-  let rendering = false;
-  let pendingPage = null;
-
-  function renderPage(num){
-    if (rendering){ pendingPage = num; return; }
-    rendering = true;
-
-    pdfDoc.getPage(num).then(function(page){
-      let canvas = wrap.querySelector('canvas');
-      if (!canvas){
-        canvas = document.createElement('canvas');
-        wrap.innerHTML = '';
-        wrap.appendChild(canvas);
-      }
-      const ctx = canvas.getContext('2d');
-
-      const containerWidth = wrap.clientWidth - 40;
-      const unscaledViewport = page.getViewport({ scale: 1 });
-      const scale = Math.min(2, Math.max(0.5, containerWidth / unscaledViewport.width));
-      const viewport = page.getViewport({ scale: scale });
-
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-
-      const renderTask = page.render({ canvasContext: ctx, viewport: viewport });
-      renderTask.promise.then(function(){
-        rendering = false;
-        if (pendingPage !== null){
-          const p = pendingPage;
-          pendingPage = null;
-          renderPage(p);
-        }
-      });
-
-      currentPage = num;
-      indicator.textContent = num + ' / ' + pdfDoc.numPages;
-      prevBtn.disabled = (num <= 1);
-      nextBtn.disabled = (num >= pdfDoc.numPages);
-    });
-  }
-
-  prevBtn.addEventListener('click', function(){
-    if (currentPage > 1) renderPage(currentPage - 1);
-  });
-  nextBtn.addEventListener('click', function(){
-    if (pdfDoc && currentPage < pdfDoc.numPages) renderPage(currentPage + 1);
-  });
-
-  pdfjsLib.getDocument(url).promise.then(function(doc){
-    pdfDoc = doc;
-    statusEl.remove();
-    renderPage(1);
-  }).catch(function(err){
-    statusEl.textContent = "Couldn't load the report — try the download link below instead.";
-    console.error(err);
-  });
-})();
-</script>
 
 </body>
 </html>
