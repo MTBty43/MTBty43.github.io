@@ -177,53 +177,53 @@
     <h2 class="section-title">The Problem</h2>
     <div class="section-rule"></div>
   </div>
-  <p class="body-text">High-alpine environments are incredible places to study biology and ecology changes but often involves accessing hard to reach places. While ground level access can be achieved with relative ease, gaining insight about anything into the atmosphere can become a challenge. With the advancement of UAV technology researchers are using them over and over to learn more about what happens as you move further from Earth's surface. Using the DJI Matrice 300 RTK supplied by the Rocky Mountain Biological Laboratory we integrated advanced sensing equipment to gain the ability to collect vital environmental data about the Earth's surface.</p>
+  <p class="body-text">High-alpine environments are incredible places to study biology and ecology changes but often involves accessing hard to reach places. While ground level access can be achieved with relative ease, gaining insight about anything into the atmosphere can become a challenge. With the advancement of UAV technology researchers are using them over and over to learn more about what happens as you move further from Earth's surface. Using a DJI Matrice 300 RTK supplied by the Rocky Mountain Biological Laboratory we integrated advanced sensing equipment to gain the ability to collect vital environmental data about the Earth's surface.</p>
 
   <div class="fig-row">
     <div class="fig">
-      <span class="fig-tag">FIG. 1 — SYSTEM OVERVIEW</span>
-      <img src="images/IndStudy_Fixture.jpg" alt="Frame Fixturing">
+      <span class="fig-tag">FIG. 1 — CAD SYSTEM OVERVIEW</span>
+      <img src="images/DroneTrisonicaMini_CAD.jpg" alt="Trisonica Mini CAD">
     </div>
     <div class="fig">
-      <span class="fig-tag">FIG. 2 — Initial Prototype</span>
-      <img src="images/IndStudy_Fixture.jpg" alt="Frame Fixturing">
+      <span class="fig-tag">FIG. 2 — First Test Flight Prototype</span>
+      <img src="images/DroneTrisonicaMini_TestFlight.jpg" alt="Test Flight">
     </div>
   </div>
-  <p class="fig-caption">Left: overview of the UAV sensor system. Right: initial prototype test.</p>
+  <p class="fig-caption">Left: CAD overview of the UAV sensor system. Right: initial prototype test flight.</p>
 
   <div class="section-head">
     <span class="section-num">02</span>
     <h2 class="section-title">Approach</h2>
     <div class="section-rule"></div>
   </div>
-  <p class="body-text">The work split into two connected pieces: hardware built to survive the environment, and a power and data strategy that let the system run unattended between visits.</p>
+  <p class="body-text">The system can be split into three connected pieces: hardware built to secure and house the sensor/electronics, power system for sensor/electronics, and data strategy that would allow our sensor to talk to the drone.</p>
 
   <table class="spec-table">
     <tr>
       <td>HARDWARE</td>
-      <td>Designed ground and UAV-mounted sensor housings and mounts built for durability against high-alpine conditions — temperature swings, moisture, and rough handling in transport.</td>
+      <td>Designed a UAV-mounted sensor housing built to minimize added weight to the drone to maximize flight time and reduce propeller vibration affecting sensor measurements.</td>
     </tr>
     <tr>
       <td>POWER</td>
-      <td>Engineered a power budget around solar and battery storage sized for unattended, multi-day field operation without wall power.</td>
+      <td>Utilized the drone's onboard power connections through of the shelf DJI development cicuitry and custom wiring to sensors and data collection microcontroller.</td>
     </tr>
     <tr>
-      <td>CONSTRAINT</td>
-      <td>Every component decision was weighed against total system cost, favoring simpler and cheaper solutions that still held up to the field conditions.</td>
+      <td>DATA STRATEGY</td>
+      <td>Developed pathways for a Rasperry Pi microcontroller to talk directly to the drone allowing for remote data collection/monitoring and the ability to pair our sensor with the drone's internal sensors to correct measuements in post.</td>
     </tr>
   </table>
 
   <div class="fig-row reverse">
     <div class="fig">
-      <span class="fig-tag">FIG. 3 — SENSOR HOUSING</span>
-      <img src="images/IndStudy_Fixture.jpg" alt="Frame Fixturing">
+      <span class="fig-tag">FIG. 3 — SECOND TEST FLIGHT</span>
+      <img src="images/DroneTrisonicaMini_TestFlight2.jpg" alt="Test Flight 2">
     </div>
     <div class="fig">
-      <span class="fig-tag">FIG. 4 — FIELD TESTING</span>
-      <img src="images/IndStudy_Fixture.jpg" alt="Frame Fixturing">
+      <span class="fig-tag">FIG. 4 — WIRING</span>
+      <img src="images/DroneTrisonicaMini_Wiring.jpg" alt="Wiring">
     </div>
   </div>
-  <p class="fig-caption">Left: sensor housing design. Right: field testing and data collection in the deployment environment.</p>
+  <p class="fig-caption">Left: second test flight including data collection. Right: sensor system wiring diagram.</p>
 
   <div class="section-head">
     <span class="section-num">03</span>
@@ -231,7 +231,7 @@
     <div class="section-rule"></div>
   </div>
   <div class="outcome-block">
-    <p class="body-text">Delivered a durable, low-power sensor system capable of unattended high-alpine deployment, collecting reliable field data within the project's cost and durability constraints.</p>
+    <p class="body-text">Delivered a durable, low-power atmospheric sensor system capable of collecting reliable field data utilizing the DJI Matrice 300 RTK platform. We succesfully paired our sensing system to DJI's ecosystem allowing remote data collection/storage on the controller and data correction using the drone's gps and IMU. Finally we minimized harware weight while keeping our sensor undisterbed from propellor wash.</p>
   </div>
 
   <div class="tags">
